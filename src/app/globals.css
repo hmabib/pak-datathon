@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+
+:root {
+  --sand-50: #fffaf2;
+  --sand-100: #f8ecd8;
+  --ink-50: #f4f7f8;
+  --ink-200: #d8dfe2;
+  --ink-700: #34424a;
+  --ink-900: #12202b;
+  --brand-400: #00a8b5;
+  --brand-500: #008897;
+  --brand-600: #006978;
+  --brand-700: #0f4f5b;
+  --danger-500: #b42318;
+  --success-500: #027a48;
+}
+
+@theme inline {
+  --font-sans: 'Avenir Next', 'Nunito Sans', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--sand-50);
+  color: var(--ink-900);
+  font-family: 'Avenir Next', 'Nunito Sans', 'Segoe UI', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Sora', 'Avenir Next Demi Bold', 'Trebuchet MS', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}

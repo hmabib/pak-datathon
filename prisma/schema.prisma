@@ -1,0 +1,339 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+enum ActorType {
+  CHERCHEUR
+  ANALYSTE
+  DEVELOPPEUR
+  LOGISTICIEN
+  ECONOMISTE
+  DATA_SCIENTIST
+  CONSULTANT
+  ETUDIANT
+  INSTITUTIONNEL
+  AUTRE
+}
+
+enum DataLevel {
+  DEBUTANT
+  INTERMEDIAIRE
+  AVANCE
+  EXPERT
+}
+
+enum RequestStatus {
+  BROUILLON
+  SOUMISE
+  EN_REVUE
+  VALIDEE
+  REJETEE
+  ATTRIBUEE
+}
+
+enum ProblemStatus {
+  IDENTIFIE
+  EN_ANALYSE
+  EQUIPE_FORMEE
+  EN_RESOLUTION
+  SOLUTION_PROPOSEE
+  VALIDEE
+}
+
+enum OnboardingStep {
+  COMPTE_CREE
+  PROFIL_COMPLETE
+  SCORING_FAIT
+  ENGAGEMENT_SIGNE
+  DASHBOARD_ACTIF
+}
+
+enum ClusterType {
+  OPERATIONNEL
+  DOCUMENTAIRE
+  SYSTEMES_IT
+  LOGISTIQUE_TRANSPORT
+  REGLEMENTAIRE
+  FINANCIER
+  INFRASTRUCTURE
+  COORDINATION
+}
+
+model User {
+  id              String          @id @default(cuid())
+  email           String          @unique
+  password        String
+  name            String
+  role            Role            @default(USER)
+  onboardingStep  OnboardingStep  @default(COMPTE_CREE)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  profile         UserProfile?
+  skills          UserSkill[]
+  onboardingScore OnboardingScore?
+  teamMembers     TeamMember[]
+  problems        Problem[]
+  solutions       Solution[]
+  votes           Vote[]
+  comments        Comment[]
+  dataRequests    DataRequest[]
+  rseCommitment   RseCommitment?
+  governance      GovernanceAcceptance?
+  auditLogs       AuditLog[]
+  notifications   Notification[]
+}
+
+model UserProfile {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actorType         ActorType @default(AUTRE)
+  domaineExpertise  String?
+  organisation      String?
+  poste             String?
+  bio               String?
+  dataLevel         DataLevel @default(DEBUTANT)
+  experienceLogistique Int    @default(0)
+  disponibilite     String?
+  interetClusters   ClusterType[]
+  linkedin          String?
+  phone             String?
+  ville             String?
+  pays              String    @default("Cameroun")
+  avatar            String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model UserSkill {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  level     Int      @default(1)
+  @@unique([userId, name])
+}
+
+model OnboardingScore {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  compatibilityScore Float  @default(0)
+  dataReadiness     Float   @default(0)
+  teamFitScore      Float   @default(0)
+  suggestedTeams    String[]
+  suggestedProblems String[]
+  suggestedDatasets String[]
+  calculatedAt      DateTime @default(now())
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  objective   String?
+  cluster     ClusterType?
+  maxMembers  Int          @default(6)
+  isOpen      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  members     TeamMember[]
+  problems    Problem[]
+  solutions   Solution[]
+  messages    TeamMessage[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+  @@unique([teamId, userId])
+}
+
+model Problem {
+  id            String        @id @default(cuid())
+  title         String
+  description   String
+  cluster       ClusterType
+  status        ProblemStatus @default(IDENTIFIE)
+  severity      Int           @default(3)
+  frequency     Int           @default(3)
+  createdById   String
+  createdBy     User          @relation(fields: [createdById], references: [id])
+  teamId        String?
+  team          Team?         @relation(fields: [teamId], references: [id])
+  needsVesselData       Boolean @default(false)
+  needsCargoData        Boolean @default(false)
+  needsTradeData        Boolean @default(false)
+  needsTruckData        Boolean @default(false)
+  vesselDataDetails     String?
+  cargoDataDetails      String?
+  tradeDataDetails      String?
+  truckDataDetails      String?
+  estimatedDataVolume   String?
+  analyticalComplexity  Int     @default(3)
+  tags          ProblemTag[]
+  solutions     Solution[]
+  votes         Vote[]
+  comments      Comment[]
+  dataRequests  DataRequest[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model ProblemTag {
+  id        String   @id @default(cuid())
+  problemId String
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  tag       String
+  @@unique([problemId, tag])
+}
+
+model Solution {
+  id          String    @id @default(cuid())
+  problemId   String
+  problem     Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  teamId      String?
+  team        Team?     @relation(fields: [teamId], references: [id])
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  title       String
+  description String
+  version     Int       @default(1)
+  status      String    @default("brouillon")
+  impact      String?
+  votes       Vote[]
+  comments    Comment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Vote {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  problemId  String?
+  problem    Problem?  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  solutionId String?
+  solution   Solution? @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  value      Int       @default(1)
+  createdAt  DateTime  @default(now())
+  @@unique([userId, problemId])
+  @@unique([userId, solutionId])
+}
+
+model Comment {
+  id         String    @id @default(cuid())
+  content    String
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  problemId  String?
+  problem    Problem?  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  solutionId String?
+  solution   Solution? @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  parentId   String?
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies    Comment[] @relation("CommentReplies")
+  createdAt  DateTime  @default(now())
+}
+
+model DataRequest {
+  id              String        @id @default(cuid())
+  problemId       String?
+  problem         Problem?      @relation(fields: [problemId], references: [id])
+  requesterId     String
+  requester       User          @relation(fields: [requesterId], references: [id])
+  status          RequestStatus @default(BROUILLON)
+  cluster         ClusterType
+  datasetType     String
+  justification   String
+  objective       String
+  estimatedImpact String?
+  duration        String?
+  sensitivityLevel Int          @default(1)
+  adminNotes      String?
+  reviewedAt      DateTime?
+  assignedAt      DateTime?
+  accessLogs      DatasetAccessLog[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model DatasetAccessLog {
+  id            String      @id @default(cuid())
+  requestId     String
+  request       DataRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  action        String
+  details       String?
+  timestamp     DateTime    @default(now())
+}
+
+model TeamMessage {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  senderId  String
+  content   String
+  type      String   @default("text")
+  createdAt DateTime @default(now())
+}
+
+model RseCommitment {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  environmentAware Boolean @default(false)
+  socialCommit    Boolean  @default(false)
+  governanceAccept Boolean @default(false)
+  signedAt        DateTime @default(now())
+}
+
+model GovernanceAcceptance {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dataCharterAccepted Boolean @default(false)
+  ethicsAccepted    Boolean  @default(false)
+  confidentialityAccepted Boolean @default(false)
+  acceptedAt        DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ip        String?
+  timestamp DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("info")
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}
