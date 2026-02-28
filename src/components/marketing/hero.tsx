@@ -4,7 +4,7 @@ import { siteConfig } from '@/lib/site'
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-[var(--ink-200)] bg-[radial-gradient(circle_at_20%_15%,#f5deb0_0%,transparent_36%),radial-gradient(circle_at_85%_10%,#d4e8ff_0%,transparent_42%),var(--sand-50)]">
+    <section className="relative overflow-hidden border-b border-[var(--ink-200)] bg-[linear-gradient(180deg,#f9fbff_0%,#f5f8fd_45%,#fff7eb_100%)]">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-8 lg:py-24">
         <div className="space-y-6">
           <p className="inline-flex rounded-full bg-white px-4 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[var(--brand-700)] ring-1 ring-[var(--ink-200)]">

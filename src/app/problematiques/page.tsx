@@ -2,6 +2,7 @@ import { MarketingLayout } from '@/components/marketing/marketing-layout'
 import { SectionTitle } from '@/components/ui/section-title'
 import { clusterLabels } from '@/lib/site'
 import { clusterProblemTypes, type ClusterProblemType } from '@/lib/problem-clusters'
+import Link from 'next/link'
 
 function DataList({ title, items }: { title: string; items: string[] }) {
   return (
@@ -62,6 +63,19 @@ export default function ProblematiquesPage() {
           title="Typologie des difficultés systémiques et mapping data"
           subtitle="Cette cartographie couvre les principaux types de problèmes logistiques sans citer de sites spécifiques, avec les données PAK nécessaires pour orienter la résolution."
         />
+
+        <div className="rounded-2xl border border-[var(--ink-200)] bg-white p-5 text-sm text-[var(--ink-700)]">
+          <p>
+            Pour une lecture “terrain” basée sur les incidents réellement remontés dans les échanges opérationnels,
+            consultez aussi le blog d’analyse.
+          </p>
+          <Link
+            href="/blog/problemes-rencontres"
+            className="mt-3 inline-flex rounded-xl bg-[var(--brand-500)] px-4 py-2 font-semibold text-white"
+          >
+            Ouvrir le blog des problèmes rencontrés
+          </Link>
+        </div>
 
         <div className="grid gap-6">
           {clusterProblemTypes.map((problem) => (

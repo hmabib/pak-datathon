@@ -6,6 +6,7 @@ export const siteConfig = {
   navigation: [
     { href: '/', label: 'Accueil' },
     { href: '/problematiques', label: 'Problématiques' },
+    { href: '/blog/problemes-rencontres', label: 'Blog terrain' },
     { href: '/programme', label: 'Programme' },
     { href: '/roadmap', label: 'Roadmap' },
     { href: '/a-propos', label: 'À propos' },

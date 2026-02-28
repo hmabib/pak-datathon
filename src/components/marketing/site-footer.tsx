@@ -26,6 +26,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog/problemes-rencontres" className="hover:text-[var(--ink-900)]">
+                  Blog terrain
+                </Link>
+              </li>
+              <li>
                 <Link href="/a-propos" className="hover:text-[var(--ink-900)]">
                   À propos
                 </Link>

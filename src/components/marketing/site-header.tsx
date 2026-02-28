@@ -5,7 +5,7 @@ import { ButtonLink } from '@/components/ui/button-link'
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--ink-200)] bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[var(--ink-200)] bg-white shadow-sm">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="group inline-flex items-center gap-3">
           <div className="flex items-center gap-2 rounded-full border border-[var(--ink-200)] bg-white px-2 py-1">

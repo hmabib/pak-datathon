@@ -43,17 +43,8 @@ body {
   background: var(--sand-50);
   color: var(--ink-900);
   font-family: 'Avenir Next', 'Nunito Sans', 'Segoe UI', sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sand-50: #08111f;
-    --sand-100: #0f1d33;
-    --ink-50: #13253f;
-    --ink-200: #274668;
-    --ink-700: #d4e3f9;
-    --ink-900: #f6fbff;
-  }
+  line-height: 1.45;
+  text-rendering: geometricPrecision;
 }
 
 h1,
@@ -75,4 +66,9 @@ textarea,
 select,
 button {
   font: inherit;
+}
+
+::selection {
+  background: #cfe6ff;
+  color: #072d58;
 }
