@@ -70,6 +70,21 @@ enum ClusterType {
   COORDINATION
 }
 
+enum SimulationType {
+  CONGESTION
+  FLUX_COMMERCE
+  IMPORT_EXPORT_STRESS
+  TRAFIC_CAMIONS
+  CAPACITE_TERMINAL
+}
+
+enum SimulationStatus {
+  BROUILLON
+  LANCEE
+  TERMINEE
+  ECHEC
+}
+
 model User {
   id              String          @id @default(cuid())
   email           String          @unique
@@ -93,6 +108,8 @@ model User {
   governance      GovernanceAcceptance?
   auditLogs       AuditLog[]
   notifications   Notification[]
+  simulations     Simulation[]
+  solutionVersions SolutionVersion[]
 }
 
 model UserProfile {
@@ -153,6 +170,7 @@ model Team {
   problems    Problem[]
   solutions   Solution[]
   messages    TeamMessage[]
+  simulations Simulation[]
 }
 
 model TeamMember {
@@ -193,8 +211,12 @@ model Problem {
   votes         Vote[]
   comments      Comment[]
   dataRequests  DataRequest[]
+  simulations   Simulation[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+
+  @@index([cluster, status])
+  @@index([createdById, createdAt])
 }
 
 model ProblemTag {
@@ -220,8 +242,11 @@ model Solution {
   impact      String?
   votes       Vote[]
   comments    Comment[]
+  versions    SolutionVersion[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([problemId, createdAt])
 }
 
 model Vote {
@@ -273,6 +298,9 @@ model DataRequest {
   accessLogs      DatasetAccessLog[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+
+  @@index([cluster, status])
+  @@index([requesterId, createdAt])
 }
 
 model DatasetAccessLog {
@@ -282,6 +310,8 @@ model DatasetAccessLog {
   action        String
   details       String?
   timestamp     DateTime    @default(now())
+
+  @@index([requestId, timestamp])
 }
 
 model TeamMessage {
@@ -292,6 +322,8 @@ model TeamMessage {
   content   String
   type      String   @default("text")
   createdAt DateTime @default(now())
+
+  @@index([teamId, createdAt])
 }
 
 model RseCommitment {
@@ -324,6 +356,10 @@ model AuditLog {
   details   String?
   ip        String?
   timestamp DateTime @default(now())
+
+  @@map("audit_trail")
+  @@index([entity, timestamp])
+  @@index([userId, timestamp])
 }
 
 model Notification {
@@ -336,4 +372,64 @@ model Notification {
   read      Boolean  @default(false)
   link      String?
   createdAt DateTime @default(now())
+
+  @@index([userId, read, createdAt])
+}
+
+model ClusterCatalog {
+  id                  String      @id @default(cuid())
+  code                ClusterType @unique
+  title               String
+  description         String
+  operationalStakes   String
+  economicStakes      String
+  technologyStakes    String
+  resilienceStakes    String
+  defaultDatasets     String[]
+  indicativeVolume    String
+  analyticalComplexity Int        @default(3)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("clusters")
+}
+
+model SolutionVersion {
+  id          String   @id @default(cuid())
+  solutionId  String
+  solution    Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  version     Int
+  title       String
+  description String
+  impact      String?
+  createdAt   DateTime @default(now())
+
+  @@unique([solutionId, version])
+  @@index([createdById, createdAt])
+  @@map("solution_versions")
+}
+
+model Simulation {
+  id            String           @id @default(cuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId     String?
+  problem       Problem?         @relation(fields: [problemId], references: [id], onDelete: SetNull)
+  teamId        String?
+  team          Team?            @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  type          SimulationType
+  status        SimulationStatus @default(BROUILLON)
+  title         String
+  assumptions   String?
+  inputs        Json
+  resultSummary String?
+  outputs       Json?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([type, status, createdAt])
+  @@index([userId, createdAt])
+  @@map("simulations")
 }

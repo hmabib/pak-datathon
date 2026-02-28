@@ -4,20 +4,46 @@ import { SectionTitle } from '@/components/ui/section-title'
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <section className="mx-auto w-full max-w-6xl space-y-8 px-4 py-16 sm:px-6 lg:px-8">
         <SectionTitle
-          eyebrow="Mission"
-          title="Créer un socle commun entre opération, data et décision"
-          subtitle="PAK DataThon Platform structure la collaboration entre acteurs publics et privés pour accélérer la modernisation logistique."
+          eyebrow="Projet"
+          title="Présentation stratégique de la plateforme collaborative PAK"
+          subtitle="Le projet répond à la complexité systémique des écosystèmes logistiques via une approche data-driven, collaborative et gouvernée."
         />
-        <div className="space-y-4 rounded-2xl border border-[var(--ink-200)] bg-white p-6">
-          <h3 className="text-xl font-black text-[var(--ink-900)]">Nos principes</h3>
-          <ul className="space-y-3 text-sm leading-relaxed text-[var(--ink-700)]">
-            <li>Priorisation orientée impact opérationnel et mesurable.</li>
-            <li>Éthique, conformité et confidentialité des données.</li>
-            <li>Co-construction avec des profils complémentaires.</li>
-            <li>Transparence via audit logs, votes et suivi des statuts.</li>
-          </ul>
+
+        <article className="rounded-2xl border border-[var(--ink-200)] bg-white p-6">
+          <h2 className="text-xl font-black text-[var(--ink-900)]">Contexte global</h2>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--ink-700)]">
+            Les chaînes logistiques modernes sont marquées par l’hétérogénéité des acteurs, la volatilité des flux et
+            la dépendance aux décisions multi-entités. La donnée constitue le levier principal pour réduire
+            l’incertitude, accélérer la coordination et fiabiliser la performance.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--ink-700)]">
+            La plateforme positionne le PAK comme détenteur stratégique de données navires, marchandises, commerce
+            international et camions, et outille les participants pour transformer ces données en solutions concrètes.
+          </p>
+        </article>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <article className="rounded-2xl border border-[var(--ink-200)] bg-white p-6">
+            <h3 className="text-lg font-black text-[var(--ink-900)]">Principes directeurs</h3>
+            <ul className="mt-3 space-y-2 text-sm text-[var(--ink-700)]">
+              <li>• Priorisation orientée impact opérationnel et économique mesurable.</li>
+              <li>• Gouvernance de la donnée avec traçabilité complète des décisions.</li>
+              <li>• Intelligence collective entre métiers, data et technologie.</li>
+              <li>• Exécution incrémentale avec livrables validables à chaque phase.</li>
+            </ul>
+          </article>
+
+          <article className="rounded-2xl border border-[var(--ink-200)] bg-white p-6">
+            <h3 className="text-lg font-black text-[var(--ink-900)]">Résultats attendus</h3>
+            <ul className="mt-3 space-y-2 text-sm text-[var(--ink-700)]">
+              <li>• Réduction des délais de cycle logistique et des congestions.</li>
+              <li>• Amélioration de la qualité des arbitrages data.</li>
+              <li>• Capacité de simulation et de projection des scénarios critiques.</li>
+              <li>• Renforcement de la résilience et de la compétitivité globale.</li>
+            </ul>
+          </article>
         </div>
       </section>
     </MarketingLayout>

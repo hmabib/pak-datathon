@@ -21,6 +21,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/problematiques" className="hover:text-[var(--ink-900)]">
+                  Problématiques
+                </Link>
+              </li>
+              <li>
                 <Link href="/a-propos" className="hover:text-[var(--ink-900)]">
                   À propos
                 </Link>

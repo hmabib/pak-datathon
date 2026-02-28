@@ -1,12 +1,13 @@
 # PAK DataThon Platform
 
 Plateforme complète Next.js + Prisma pour:
-- Site vitrine (landing + pages programme, à propos, contact)
+- Site vitrine stratégique premium (landing, programme, problématiques, roadmap, à propos, contact)
 - Authentification (inscription, connexion, session cookie JWT)
 - Onboarding guidé (profil, compétences, scoring, engagements)
-- Dashboard utilisateur
-- Dashboard admin
-- API routes métier (auth, onboarding, problèmes, demandes datasets, stats)
+- Dashboard utilisateur + workspace collaboratif avancé
+- Dashboard admin analytics + gouvernance
+- API routes métier (auth, onboarding, problèmes, demandes datasets, stats, équipes, chat, simulations, clustering)
+- Typologie exhaustive des difficultés logistiques clusterisées et data mapping
 
 ## Stack
 
@@ -73,13 +74,24 @@ Variables principales:
 - `GET|POST /api/data-requests`
 - `GET /api/dashboard/summary`
 - `GET /api/admin/stats`
+- `POST /api/admin/bootstrap-clusters`
+- `GET /api/clusters`
+- `POST /api/problems/classify`
+- `GET|POST /api/teams`
+- `POST /api/teams/:teamId/join`
+- `GET|POST /api/teams/:teamId/messages`
+- `GET|POST /api/simulations`
+- `GET|POST /api/solutions/:solutionId/versions`
 
 ## Flux applicatifs
 
 - Nouveau compte -> `/auth/register`
 - Onboarding -> `/onboarding`
 - Dashboard utilisateur -> `/dashboard`
+- Workspace collaboratif -> `/dashboard/workspace`
 - Dashboard admin -> `/admin` (rôles `ADMIN` et `MODERATOR`)
+- Catalogue des problématiques -> `/problematiques`
+- Roadmap démarrage 11 mars 2026 -> `/roadmap`
 
 ### Promouvoir un utilisateur en admin
 
@@ -113,19 +125,31 @@ git push -u origin main
 
 ```text
 src/app
-  /(marketing pages)
+  /(marketing pages: /, /programme, /problematiques, /roadmap...)
   /auth/login
   /auth/register
   /onboarding
-  /dashboard
+  /dashboard (+ /dashboard/workspace)
   /admin
   /api/*
 src/components
-  /marketing
+  /marketing (sections stratégiques)
   /auth
   /onboarding
-  /dashboard
+  /dashboard (workspace + admin actions)
 src/lib
-  auth, prisma, validators, onboarding, http
+  auth, prisma, validators, onboarding, http, problem-clusters, problem-intelligence
 prisma/schema.prisma
+docs/PLATEFORME_ARCHITECTURE.md
 ```
+
+## Documentation architecture
+
+- Voir [docs/PLATEFORME_ARCHITECTURE.md](docs/PLATEFORME_ARCHITECTURE.md) pour:
+  - architecture complète
+  - SQL étendu
+  - UX/Admin flows
+  - scaling
+  - gouvernance data
+  - sécurité
+  - roadmap

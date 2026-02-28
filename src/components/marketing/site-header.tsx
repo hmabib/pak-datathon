@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { siteConfig } from '@/lib/site'
 import { ButtonLink } from '@/components/ui/button-link'
 
@@ -7,11 +8,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-[var(--ink-200)] bg-white/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="group inline-flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-500)] text-lg font-black text-white">
-            P
+          <div className="flex items-center gap-2 rounded-full border border-[var(--ink-200)] bg-white px-2 py-1">
+            <Image src="/logoPAK.png" alt="Logo PAK" width={30} height={30} className="h-7 w-7 rounded-full object-cover" />
+            <Image src="/pakazure-logo.jpg" alt="Logo PakAzure" width={64} height={30} className="h-7 w-auto object-contain" />
           </div>
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--brand-600)]">PAK</p>
+            <p className="text-sm font-extrabold uppercase tracking-[0.12em] text-[var(--brand-600)]">PAK • PakAzure</p>
             <p className="text-sm font-medium text-[var(--ink-700)]">DataThon Platform</p>
           </div>
         </Link>

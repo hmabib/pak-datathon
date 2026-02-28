@@ -19,7 +19,13 @@ export function DashboardShell({ title, subtitle, children, role = 'user' }: Das
           </div>
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/dashboard" className="rounded-lg px-3 py-2 hover:bg-[var(--sand-100)]">
-              Dashboard
+              Vue globale
+            </Link>
+            <Link href="/dashboard/workspace" className="rounded-lg px-3 py-2 hover:bg-[var(--sand-100)]">
+              Workspace
+            </Link>
+            <Link href="/problematiques" className="rounded-lg px-3 py-2 hover:bg-[var(--sand-100)]">
+              Clusters
             </Link>
             {role === 'admin' ? (
               <Link href="/admin" className="rounded-lg px-3 py-2 hover:bg-[var(--sand-100)]">

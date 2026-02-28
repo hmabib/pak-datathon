@@ -2,17 +2,26 @@
 
 :root {
   --sand-50: #fffaf2;
-  --sand-100: #f8ecd8;
-  --ink-50: #f4f7f8;
-  --ink-200: #d8dfe2;
-  --ink-700: #34424a;
-  --ink-900: #12202b;
-  --brand-400: #00a8b5;
-  --brand-500: #008897;
-  --brand-600: #006978;
-  --brand-700: #0f4f5b;
+  --sand-100: #f4e7cf;
+  --ink-50: #eff4fa;
+  --ink-200: #d3dce8;
+  --ink-700: #23374f;
+  --ink-900: #0b1a2d;
+  --pak-blue-400: #2588d8;
+  --pak-blue-500: #0072ce;
+  --pak-blue-600: #0858a6;
+  --pak-gold-500: #e8a317;
+  --pak-gold-600: #c8870e;
+  --pakazure-500: #4a90d9;
+  --pakazure-700: #1a3a6b;
+  --brand-400: var(--pak-blue-400);
+  --brand-500: var(--pak-blue-500);
+  --brand-600: var(--pak-blue-600);
+  --brand-700: #0e3f7a;
   --danger-500: #b42318;
   --success-500: #027a48;
+  --gradient-data: linear-gradient(126deg, #1a3a6b 0%, #0072ce 45%, #4a90d9 100%);
+  --gradient-accent: linear-gradient(128deg, #f7e1a8 0%, #e8a317 100%);
 }
 
 @theme inline {
@@ -34,6 +43,17 @@ body {
   background: var(--sand-50);
   color: var(--ink-900);
   font-family: 'Avenir Next', 'Nunito Sans', 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sand-50: #08111f;
+    --sand-100: #0f1d33;
+    --ink-50: #13253f;
+    --ink-200: #274668;
+    --ink-700: #d4e3f9;
+    --ink-900: #f6fbff;
+  }
 }
 
 h1,

@@ -14,12 +14,13 @@ export async function GET(request: NextRequest) {
     return jsonError('Accès interdit', 403)
   }
 
-  const [users, teams, problems, dataRequests, solutions, topClusters] = await Promise.all([
+  const [users, teams, problems, dataRequests, solutions, simulations, topClusters, requestHeatmap, topTags] = await Promise.all([
     prisma.user.count(),
     prisma.team.count(),
     prisma.problem.count(),
     prisma.dataRequest.count(),
     prisma.solution.count(),
+    prisma.simulation.count(),
     prisma.problem.groupBy({
       by: ['cluster'],
       _count: {
@@ -32,6 +33,25 @@ export async function GET(request: NextRequest) {
       },
       take: 5,
     }),
+    prisma.dataRequest.groupBy({
+      by: ['cluster', 'status'],
+      _count: {
+        _all: true,
+      },
+      orderBy: [{ cluster: 'asc' }, { status: 'asc' }],
+    }),
+    prisma.problemTag.groupBy({
+      by: ['tag'],
+      _count: {
+        _all: true,
+      },
+      orderBy: {
+        _count: {
+          tag: 'desc',
+        },
+      },
+      take: 12,
+    }),
   ])
 
   return jsonOk({
@@ -41,7 +61,10 @@ export async function GET(request: NextRequest) {
       problems,
       dataRequests,
       solutions,
+      simulations,
       topClusters,
+      requestHeatmap,
+      topTags,
     },
   })
 }
